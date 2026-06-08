@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Aplikasi Setia Nugraha - Toko Bangunan ABC</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Link Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- App Container (Mobile viewport centered on desktop) -->
+    <div id="app-container" class="app-container">
+        
+        <!-- ==================== SCREEN 0: WELCOME SCREEN ==================== -->
+        <section id="screen-welcome" class="app-screen active">
+            <div class="welcome-container">
+                <!-- Logo -->
+                <div class="welcome-logo-wrapper">
+                    <img src="logo_setia_nugraha.png" alt="Logo Setia Nugraha 2" class="welcome-logo">
+                </div>
+                
+                <!-- Text Content -->
+                <div class="welcome-content">
+                    <h1 class="welcome-title">Setia Nugraha 2</h1>
+                    <p class="welcome-tagline">Toko Bahan Bangunan & Alat Teknik</p>
+                    <p class="welcome-desc">Solusi terbaik, terlengkap, dan terpercaya untuk kebutuhan pembangunan dan renovasi rumah Anda.</p>
+                </div>
+                
+                <!-- Actions -->
+                <div class="welcome-actions">
+                    <button class="btn-primary btn-full btn-glow" id="btn-welcome-shop">
+                        <svg viewBox="0 0 24 24" class="btn-icon-svg"><path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/></svg>
+                        Mulai Belanja
+                    </button>
+                    
+                    <button class="btn-secondary btn-full" id="btn-welcome-scan">
+                        <svg viewBox="0 0 24 24" class="btn-icon-svg"><path d="M4 4h7v7H4zm2 2v3h3V6zm2 2H7V7h1zm6-4h7v7h-7zm2 2v3h3V6zm2 2h-1V7h1zM4 13h7v7H4zm2 2v3h3v-3zm2 2H7v-1h1zm11-4h3v3h-3zm-2 2h2v2h-2zm2 2h3v3h-3zm-4 1h3v2h-3zm2-3h2v2h-2zm-3-2h2v2h-2zm-1 2h2v2h-2zm3 2h2v2h-2z"/></svg>
+                        Scan Barcode
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 1: SCAN BARCODE ==================== -->
+        <section id="screen-scan" class="app-screen">
+            <header class="screen-header header-transparent">
+                <button class="btn-icon" id="btn-scan-back">
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                </button>
+                <h1 class="header-title">Scan Barcode</h1>
+                <button class="btn-icon" id="btn-scan-close">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+                </button>
+            </header>
+
+            <div class="scan-container">
+                <!-- Camera view area / Viewfinder -->
+                <div class="scanner-viewfinder">
+                    <div class="corner top-left"></div>
+                    <div class="corner top-right"></div>
+                    <div class="corner bottom-left"></div>
+                    <div class="corner bottom-right"></div>
+                    
+                    <!-- Scanner Laser Animation -->
+                    <div class="scanner-laser"></div>
+                    
+                    <!-- HTML5 Video element for real camera (hidden until active) -->
+                    <video id="scanner-video" autoplay playsinline></video>
+                    
+                    <!-- Overlay loading/instructions -->
+                    <div class="scanner-placeholder-img">
+                        <svg viewBox="0 0 24 24" class="animated-pulse"><path d="M3 4h5v2H5v3H3V4zm3 6h12v4H6v-4zm15-6h-5v2h3v3h2V4zM3 20h5v-2H5v-3H3v5zm18 0h-5v-2h3v-3h2v5z"/></svg>
+                    </div>
+                </div>
+
+                <div class="scan-instructions">
+                    <p class="instruction-main">Arahkan kamera ke barcode toko untuk mulai belanja</p>
+                    <p class="instruction-sub">Atau gunakan tombol simulasi di bawah untuk langsung berbelanja</p>
+                </div>
+
+                <!-- Simulation & controls -->
+                <div class="scan-actions">
+                    <button class="btn-primary btn-glow" id="btn-simulate-scan">
+                        <svg viewBox="0 0 24 24" class="btn-icon-svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+                        Mulai Belanja (Simulasi Scan)
+                    </button>
+                    
+                    <button class="btn-secondary btn-round" id="btn-toggle-flash">
+                        <svg viewBox="0 0 24 24" id="icon-flash" class="btn-icon-svg"><path d="M7 2v11h3v9l7-12h-4l4-8H7z"/></svg>
+                        <span>Flash Off</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 2: DAFTAR PRODUK ==================== -->
+        <section id="screen-products" class="app-screen">
+            <header class="screen-header">
+                <button class="btn-icon btn-back-to-scan">
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                </button>
+                <div class="header-content">
+                    <h1 class="header-title-main" id="store-title">Toko Bangunan ABC</h1>
+                    <span class="header-subtitle">Belanja Bahan Bangunan</span>
+                </div>
+                <div class="header-right">
+                    <div class="scanner-shortcut" id="btn-shortcut-scan" title="Scan Barcode">
+                        <svg viewBox="0 0 24 24"><path d="M4 4h7v7H4zm2 2v3h3V6zm2 2H7V7h1zm6-4h7v7h-7zm2 2v3h3V6zm2 2h-1V7h1zM4 13h7v7H4zm2 2v3h3v-3zm2 2H7v-1h1zm11-4h3v3h-3zm-2 2h2v2h-2zm2 2h3v3h-3zm-4 1h3v2h-3zm2-3h2v2h-2zm-3-2h2v2h-2zm-1 2h2v2h-2zm3 2h2v2h-2z"/></svg>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Search & Filter Controls -->
+            <div class="search-filter-container">
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24" class="search-icon"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 5 1.5-1.5-5-5zm-6 0C7 14 5 12 5 9.5S7 5 9.5 5 14 7 14 9.5 12 14 9.5 14z"/></svg>
+                    <input type="text" id="search-input" placeholder="Cari barang...">
+                    <button class="clear-search-btn" id="btn-clear-search">&times;</button>
+                </div>
+                <button class="btn-filter" id="btn-filter-categories" title="Filter Kategori">
+                    <svg viewBox="0 0 24 24"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+                </button>
+            </div>
+
+            <!-- Category Pills (Dynamic Filter) -->
+            <div class="category-pills-scroll">
+                <div class="category-pills" id="category-pills-list">
+                    <!-- Dynamic Category Pills will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Product Cards List -->
+            <div class="product-list-scroll">
+                <div class="product-cards-container" id="product-list-container">
+                    <!-- Dynamic Product Cards will be inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 3: DETAIL PRODUK ==================== -->
+        <section id="screen-detail" class="app-screen">
+            <header class="screen-header header-transparent-dark">
+                <button class="btn-icon" id="btn-detail-back">
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                </button>
+                <h1 class="header-title">Detail Produk</h1>
+                <button class="btn-icon btn-favorite" id="btn-detail-favorite">
+                    <svg viewBox="0 0 24 24" id="icon-heart"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                </button>
+            </header>
+
+            <div class="detail-content-scroll">
+                <!-- Large Product Graphic -->
+                <div class="detail-product-image-container" id="detail-product-image">
+                    <!-- SVG Image will be placed here -->
+                </div>
+
+                <div class="detail-info-card">
+                    <h2 class="detail-product-title" id="detail-title">Semen Portland (40kg)</h2>
+                    
+                    <div class="detail-price-row">
+                        <span class="detail-price" id="detail-price">Rp 65.000</span>
+                        <span class="detail-stock-badge" id="detail-stock">Stok: 120 zak</span>
+                    </div>
+
+                    <p class="detail-description" id="detail-desc">
+                        Bahan pengikat hidrolis berkualitas tinggi, cocok untuk pekerjaan beton, plesteran, dan pasang bata. Kuat tekan tinggi dan tahan lama.
+                    </p>
+
+                    <hr class="divider">
+
+                    <!-- Varian Selector -->
+                    <div class="detail-section">
+                        <h3 class="detail-section-title">Pilih Satuan</h3>
+                        <div class="variant-options-list">
+                            <!-- Variant option 1: PCS -->
+                            <label class="variant-option-card active" for="variant-pcs">
+                                <input type="radio" name="product-variant" id="variant-pcs" value="pcs" checked>
+                                <div class="variant-custom-radio"></div>
+                                <div class="variant-info">
+                                    <span class="variant-name" id="variant-pcs-label">Per PCS (1 zak)</span>
+                                    <span class="variant-price" id="variant-pcs-price">Rp 65.000</span>
+                                </div>
+                            </label>
+                            
+                            <!-- Variant option 2: PACK -->
+                            <label class="variant-option-card" for="variant-pack">
+                                <input type="radio" name="product-variant" id="variant-pack" value="pack">
+                                <div class="variant-custom-radio"></div>
+                                <div class="variant-info">
+                                    <div class="variant-name-badge-row">
+                                        <span class="variant-name" id="variant-pack-label">Per PACK (10 zak)</span>
+                                        <span class="badge-saving">Lebih hemat</span>
+                                    </div>
+                                    <span class="variant-price" id="variant-pack-price">Rp 620.000</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Quantity Counter -->
+                    <div class="quantity-section-row">
+                        <span class="quantity-label">Jumlah</span>
+                        <div class="quantity-picker">
+                            <button class="qty-btn" id="btn-qty-minus">
+                                <svg viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2z"/></svg>
+                            </button>
+                            <input type="number" id="detail-qty-input" value="1" min="1" readonly>
+                            <button class="qty-btn" id="btn-qty-plus">
+                                <svg viewBox="0 0 24 24"><path d="M19 13h-6V7h-2v6H5v2h6v6h2v-6h6v-2z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail Action Footer -->
+            <div class="detail-footer">
+                <button class="btn-primary btn-full" id="btn-add-to-cart">
+                    <svg viewBox="0 0 24 24" class="btn-icon-svg"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                    Masukkan ke Keranjang
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 4: KERANJANG ==================== -->
+        <section id="screen-cart" class="app-screen">
+            <header class="screen-header">
+                <button class="btn-icon" id="btn-cart-back">
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                </button>
+                <h1 class="header-title">Keranjang</h1>
+                <button class="btn-icon text-danger" id="btn-clear-cart" title="Kosongkan Keranjang">
+                    <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                </button>
+            </header>
+
+            <div class="cart-content-scroll">
+                <!-- Cart Items List Container -->
+                <div class="cart-items-container" id="cart-items-list">
+                    <!-- Dynamically rendered cart items will appear here -->
+                </div>
+            </div>
+
+            <!-- Cart Footer Info and Checkout Button -->
+            <div class="cart-footer" id="cart-footer-panel">
+                <div class="cart-summary-row">
+                    <span class="summary-label">Total</span>
+                    <span class="summary-value" id="cart-total-price">Rp 0</span>
+                </div>
+                <button class="btn-primary btn-full btn-glow" id="btn-cart-checkout">
+                    Checkout
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 5: DETAIL PESANAN & KIRIM ==================== -->
+        <section id="screen-checkout" class="app-screen">
+            <header class="screen-header">
+                <button class="btn-icon" id="btn-checkout-back">
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                </button>
+                <h1 class="header-title">Detail Pesanan</h1>
+                <div style="width: 40px;"></div> <!-- Spacer for symmetry -->
+            </header>
+
+            <div class="checkout-content-scroll">
+                <form id="checkout-form" class="checkout-form">
+                    
+                    <!-- Store info card -->
+                    <div class="form-group readonly-group">
+                        <label class="form-label">Toko</label>
+                        <div class="form-input-readonly" id="checkout-store-name">Toko Bangunan ABC</div>
+                    </div>
+                    
+                    <!-- Customer Name -->
+                    <div class="form-group">
+                        <label class="form-label" for="customer-name">Nama Penerima <span class="required">*</span></label>
+                        <input type="text" id="customer-name" class="form-input" placeholder="Masukkan nama penerima..." required value="Ijah">
+                        <span class="input-error-msg" id="err-customer-name">Nama wajib diisi</span>
+                    </div>
+
+                    <!-- Customer Phone -->
+                    <div class="form-group">
+                        <label class="form-label" for="customer-phone">No. HP / Whatsapp <span class="required">*</span></label>
+                        <input type="tel" id="customer-phone" class="form-input" placeholder="Contoh: 0812XXXXXXXX" required value="081234567890">
+                        <span class="input-error-msg" id="err-customer-phone">Nomor HP tidak valid (minimal 10 digit)</span>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="form-group">
+                        <label class="form-label" for="order-notes">Catatan Kiriman (opsional)</label>
+                        <textarea id="order-notes" class="form-textarea" rows="4" placeholder="Tulis catatan pengiriman di sini... (contoh: tolong dikirim sore hari)"></textarea>
+                    </div>
+
+                    <!-- Order Summary Card -->
+                    <div class="checkout-summary-card">
+                        <h3 class="summary-card-title">Ringkasan Pembayaran</h3>
+                        <div class="summary-details-list" id="checkout-summary-items">
+                            <!-- Dynamic items lists -->
+                        </div>
+                        <hr class="summary-card-divider">
+                        <div class="checkout-total-row">
+                            <span>Total Pembayaran</span>
+                            <span class="checkout-total-price" id="checkout-total-price">Rp 0</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Send button -->
+            <div class="checkout-footer">
+                <button type="submit" form="checkout-form" class="btn-primary btn-full btn-glow" id="btn-submit-order">
+                    Kirim Pesanan
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== SCREEN 6: PESANAN BERHASIL ==================== -->
+        <section id="screen-success" class="app-screen">
+            <div class="success-container">
+                <!-- Checkmark Animation -->
+                <div class="success-checkmark-wrapper">
+                    <div class="success-checkmark-circle">
+                        <svg viewBox="0 0 24 24" class="checkmark-svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                    </div>
+                </div>
+
+                <h2 class="success-title">Pesanan berhasil dikirim!</h2>
+                
+                <div class="invoice-box-wrapper">
+                    <span class="invoice-label">No. Pesanan</span>
+                    <div class="invoice-number-card" id="success-invoice-code">
+                        <span>#INV-250518-001</span>
+                        <!-- Copy icon -->
+                        <button class="btn-copy" id="btn-copy-invoice" title="Salin No. Pesanan">
+                            <svg viewBox="0 0 24 24" class="copy-icon-svg"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                        </button>
+                    </div>
+                    <span class="copy-success-tooltip" id="copy-tooltip">Tersalin!</span>
+                </div>
+
+                <div class="status-card">
+                    <span class="status-label">Status</span>
+                    <span class="status-badge animated-pulse-slow">Menunggu konfirmasi toko</span>
+                </div>
+                
+                <p class="success-note">
+                    Toko akan segera memproses pesanan Anda. Kami akan menghubungi Anda di nomor HP yang terdaftar.
+                </p>
+
+                <div class="success-actions">
+                    <button class="btn-primary btn-full" id="btn-success-view-orders">
+                        Lihat Pesanan Saya
+                    </button>
+                    <button class="btn-secondary btn-full" id="btn-success-home">
+                        Belanja Lagi
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ADDITIONAL SCREEN: PESANAN SAYA (History) ==================== -->
+        <section id="screen-orders" class="app-screen">
+            <header class="screen-header">
+                <h1 class="header-title">Pesanan Saya</h1>
+            </header>
+            
+            <div class="orders-content-scroll">
+                <div class="orders-list" id="orders-history-list">
+                    <!-- History of checkouts will be inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== ADDITIONAL SCREEN: AKUN (Profile) ==================== -->
+        <section id="screen-account" class="app-screen">
+            <header class="screen-header">
+                <h1 class="header-title">Profil Pengguna</h1>
+            </header>
+            
+            <div class="account-content-scroll">
+                <div class="profile-header-card">
+                    <div class="profile-avatar">
+                        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    </div>
+                    <h2 class="profile-name" id="profile-display-name">Ijah</h2>
+                    <span class="profile-phone" id="profile-display-phone">081234567890</span>
+                </div>
+                
+                <div class="settings-list-container">
+                    <div class="settings-group-title">Informasi Pengiriman</div>
+                    
+                    <div class="settings-item">
+                        <div class="settings-item-icon font-icon">📍</div>
+                        <div class="settings-item-content">
+                            <span class="settings-item-title">Alamat Default</span>
+                            <span class="settings-item-desc">Jl. Raya Sukabumi No. 12, Jawa Barat</span>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-group-title">Aplikasi Setia Nugraha</div>
+                    
+                    <div class="settings-item" id="btn-show-about">
+                        <div class="settings-item-icon font-icon">ℹ️</div>
+                        <div class="settings-item-content">
+                            <span class="settings-item-title">Tentang Aplikasi</span>
+                            <span class="settings-item-desc">Versi 1.0.0 (Front-End Demo)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-item text-danger-item" id="btn-logout-simulation">
+                        <div class="settings-item-icon font-icon">🚪</div>
+                        <div class="settings-item-content">
+                            <span class="settings-item-title">Reset Simulasi</span>
+                            <span class="settings-item-desc">Hapus semua data keranjang & riwayat</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== DIALOGS & MODALS ==================== -->
+        <!-- Category Filter Modal -->
+        <div id="filter-modal" class="modal-overlay">
+            <div class="modal-card slide-up-animation">
+                <div class="modal-header">
+                    <h3 class="modal-title">Filter Kategori</h3>
+                    <button class="btn-close-modal" id="btn-close-filter">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="filter-options-grid" id="modal-category-options">
+                        <!-- Dynamic filter categories -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="btn-reset-filter">Reset</button>
+                    <button class="btn-primary" id="btn-apply-filter">Terapkan</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== APP NAVIGATION BAR ==================== -->
+        <nav class="app-nav-bar" id="app-bottom-nav">
+            <button class="nav-item active" data-target="screen-products">
+                <svg viewBox="0 0 24 24" class="nav-icon"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                <span class="nav-label">Beranda</span>
+            </button>
+            
+            <button class="nav-item" data-target="screen-cart" id="nav-item-cart">
+                <div class="nav-cart-badge-container">
+                    <svg viewBox="0 0 24 24" class="nav-icon"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                    <span class="cart-badge-count" id="cart-badge-bubble" style="display: none;">0</span>
+                </div>
+                <span class="nav-label">Keranjang</span>
+            </button>
+            
+            <button class="nav-item" data-target="screen-orders">
+                <svg viewBox="0 0 24 24" class="nav-icon"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                <span class="nav-label">Pesanan</span>
+            </button>
+            
+            <button class="nav-item" data-target="screen-account">
+                <svg viewBox="0 0 24 24" class="nav-icon"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span class="nav-label">Akun</span>
+            </button>
+        </nav>
+        
+        <!-- Toast Notification Container -->
+        <div id="toast-container" class="toast-container"></div>
+    </div>
+
+    <!-- Script File -->
+    <script src="app.js"></script>
+</body>
+</html>
